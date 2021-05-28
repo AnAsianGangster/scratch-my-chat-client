@@ -9,8 +9,19 @@ const { username, room } = Qs.parse(location.search, {
 });
 
 // set up script will use sed to replace these to ip or domain
-const CHAT_SERVER_IP = 'CHAT_SERVER_IP_PLACEHOLDER';
-const socket = io(CHAT_SERVER_IP);
+// const CHAT_SERVER_IP = 'CHAT_SERVER_IP_PLACEHOLDER';
+const CHAT_SERVER_IP = 'localhost:7000';
+// const socket = io(CHAT_SERVER_IP);
+
+// cors
+var connectionOptions = {
+    'force new connection': true,
+    reconnectionAttempts: 'Infinity', //avoid having user reconnect manually in order to prevent dead clients after a server restart
+    timeout: 10000, //before connect_error and connect_timeout are emitted.
+    transports: ['websocket'],
+};
+
+const socket = io(CHAT_SERVER_IP, connectionOptions);
 
 console.log(username, room);
 socket.emit('joinRoom', { username, room });
